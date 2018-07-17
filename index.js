@@ -1,6 +1,9 @@
 var randomBytes
 if (typeof window !== 'undefined' && window.crypto) {
-  randomBytes = window.crypto.getRandomValues
+  randomBytes = function (len) {
+    var array = new Uint32Array(len);
+    return Buffer.from(window.crypto.getRandomValues(array))
+  }
 } else {
   randomBytes = require('crypto').randomBytes
 }
