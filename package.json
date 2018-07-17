@@ -1,6 +1,6 @@
 {
   "name": "bip39-light",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Bitcoin BIP39: Mnemonic code for generating deterministic keys, a lightweight fork",
   "main": "index.js",
   "scripts": {
