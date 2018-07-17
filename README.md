@@ -1,4 +1,4 @@
-# BIP39
+# bip39-light
 
 ***WARNING: This is just a very early attempt at getting a lightweight implementation. DO NOT use in production***
 
@@ -36,7 +36,7 @@ bip39.validateMnemonic('basket actual')
 
 
 ``` js
-var bip39 = require('bip39')
+var bip39 = require('bip39-light')
 
 // defaults to BIP39 English word list
 // uses HEX strings for entropy
