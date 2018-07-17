@@ -1,5 +1,4 @@
 var bip39 = require('../')
-var Buffer = require('safe-buffer').Buffer
 var proxyquire = require('proxyquire')
 var test = require('tape')
 
@@ -17,8 +16,10 @@ test('README example 1', function (t) {
 
 test('README example 2', function (t) {
   var stub = {
-    randombytes: function (size) {
-      return new Buffer('qwertyuiopasdfghjklzxcvbnm[];,./'.slice(0, size))
+    crypto: {
+      randomBytes: function (size) {
+        return Buffer.from('qwertyuiopasdfghjklzxcvbnm[];,./'.slice(0, size))
+      }
     }
   }
   var proxiedbip39 = proxyquire('../', stub)

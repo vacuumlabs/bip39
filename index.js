@@ -1,19 +1,8 @@
-var Buffer = require('safe-buffer').Buffer
 var createHash = require('create-hash')
 var pbkdf2 = require('pbkdf2').pbkdf2Sync
-var randomBytes = require('randombytes')
+var randombytes = require('crypto').randomBytes
 
-// use unorm until String.prototype.normalize gets better browser support
-var unorm = require('unorm')
-
-var CHINESE_SIMPLIFIED_WORDLIST = require('./wordlists/chinese_simplified.json')
-var CHINESE_TRADITIONAL_WORDLIST = require('./wordlists/chinese_traditional.json')
 var ENGLISH_WORDLIST = require('./wordlists/english.json')
-var FRENCH_WORDLIST = require('./wordlists/french.json')
-var ITALIAN_WORDLIST = require('./wordlists/italian.json')
-var JAPANESE_WORDLIST = require('./wordlists/japanese.json')
-var KOREAN_WORDLIST = require('./wordlists/korean.json')
-var SPANISH_WORDLIST = require('./wordlists/spanish.json')
 var DEFAULT_WORDLIST = ENGLISH_WORDLIST
 
 var INVALID_MNEMONIC = 'Invalid mnemonic'
@@ -48,8 +37,8 @@ function salt (password) {
 }
 
 function mnemonicToSeed (mnemonic, password) {
-  var mnemonicBuffer = Buffer.from(unorm.nfkd(mnemonic), 'utf8')
-  var saltBuffer = Buffer.from(salt(unorm.nfkd(password)), 'utf8')
+  var mnemonicBuffer = Buffer.from(mnemonic, 'utf8')
+  var saltBuffer = Buffer.from(salt(password), 'utf8')
 
   return pbkdf2(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512')
 }
@@ -61,7 +50,7 @@ function mnemonicToSeedHex (mnemonic, password) {
 function mnemonicToEntropy (mnemonic, wordlist) {
   wordlist = wordlist || DEFAULT_WORDLIST
 
-  var words = unorm.nfkd(mnemonic).split(' ')
+  var words = mnemonic.split(' ')
   if (words.length % 3 !== 0) throw new Error(INVALID_MNEMONIC)
 
   // convert word indices to 11 bit binary strings
@@ -109,13 +98,13 @@ function entropyToMnemonic (entropy, wordlist) {
     return wordlist[index]
   })
 
-  return wordlist === JAPANESE_WORDLIST ? words.join('\u3000') : words.join(' ')
+  return words.join(' ')
 }
 
 function generateMnemonic (strength, rng, wordlist) {
   strength = strength || 128
   if (strength % 32 !== 0) throw new TypeError(INVALID_ENTROPY)
-  rng = rng || randomBytes
+  rng = rng || randombytes
 
   return entropyToMnemonic(rng(strength / 8), wordlist)
 }
@@ -138,16 +127,6 @@ module.exports = {
   generateMnemonic: generateMnemonic,
   validateMnemonic: validateMnemonic,
   wordlists: {
-    EN: ENGLISH_WORDLIST,
-    JA: JAPANESE_WORDLIST,
-
-    chinese_simplified: CHINESE_SIMPLIFIED_WORDLIST,
-    chinese_traditional: CHINESE_TRADITIONAL_WORDLIST,
-    english: ENGLISH_WORDLIST,
-    french: FRENCH_WORDLIST,
-    italian: ITALIAN_WORDLIST,
-    japanese: JAPANESE_WORDLIST,
-    korean: KOREAN_WORDLIST,
-    spanish: SPANISH_WORDLIST
+    EN: ENGLISH_WORDLIST
   }
 }
