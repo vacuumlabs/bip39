@@ -1,6 +1,11 @@
+var randomBytes
+if (typeof window !== 'undefined' && window.crypto) {
+  randomBytes = window.crypto.getRandomValues
+} else {
+  randomBytes = require('crypto').randomBytes
+}
 var createHash = require('create-hash')
 var pbkdf2 = require('pbkdf2').pbkdf2Sync
-var randombytes = require('crypto').randomBytes
 
 var ENGLISH_WORDLIST = require('./wordlists/english.json')
 var DEFAULT_WORDLIST = ENGLISH_WORDLIST
@@ -104,7 +109,7 @@ function entropyToMnemonic (entropy, wordlist) {
 function generateMnemonic (strength, rng, wordlist) {
   strength = strength || 128
   if (strength % 32 !== 0) throw new TypeError(INVALID_ENTROPY)
-  rng = rng || randombytes
+  rng = rng || randomBytes
 
   return entropyToMnemonic(rng(strength / 8), wordlist)
 }

@@ -1,5 +1,4 @@
 var bip39 = require('../')
-var Buffer = require('safe-buffer').Buffer
 var WORDLISTS = {
   english: require('../wordlists/english.json'),
   custom: require('./wordlist.json')
