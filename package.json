@@ -22,7 +22,6 @@
   "license": "ISC",
   "dependencies": {
     "create-hash": "^1.1.0",
-    "crypto": "^1.0.1",
     "pbkdf2": "^3.0.9"
   },
   "devDependencies": {
