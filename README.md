@@ -1,7 +1,5 @@
 # bip39-light
 
-***WARNING: This is just a very early attempt at getting a lightweight implementation. DO NOT use in production***
-
 A lightweight fork of [bitcoinjs/bip39](https://github.com/bitcoinjs/bip39). Only english wordlist and removed some dependendecies.
 
 JavaScript implementation of [Bitcoin BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki): Mnemonic code for generating deterministic keys
